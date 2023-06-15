@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'accounts',
     'store',
     'carts',
+    'orders',
 ]
 
 MIDDLEWARE = [
@@ -154,3 +155,7 @@ EMAIL_PORT = os.getenv('EMAIL_PORT')
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS')
+
+# liqpay configurations
+PUBLIC_KEY = os.getenv('LIQPAY_PUBLIC_KEY')
+PRIVATE_KEY = os.getenv('LIQPAY_PRIVATE_KEY')
