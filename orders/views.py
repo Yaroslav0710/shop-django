@@ -14,7 +14,7 @@ from carts.models import CartItem
 from store.models import Product
 from .forms import OrderForm
 from .models import Order, Payment, OrderProduct
-from shop.settings import PUBLIC_KEY, PRIVATE_KEY
+# from shop.settings import PUBLIC_KEY, PRIVATE_KEY
 
 
 from django.views.generic import TemplateView

@@ -10,25 +10,36 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
-from dotenv import load_dotenv
-load_dotenv()
+import environ
 import os
+
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, False),
+    STAGE=(bool, False),
+    ALLOWED_HOSTS=(list, ['*'])
+)
+# reading .env file
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+# environ.Env.read_env()
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-s^=ow7ahq8z^y@1yky2s#736zhyfs_3#a725j+_at4xk2y)*w*'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = []
+
+ALLOWED_HOSTS = ['django-shop-env.eba-f43xbc6c.us-west-2.elasticbeanstalk.com']
 
 
 # Application definition
@@ -45,6 +56,7 @@ INSTALLED_APPS = [
     'store',
     'carts',
     'orders',
+    'admin_honeypot',
 ]
 
 MIDDLEWARE = [
@@ -55,7 +67,13 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_session_timeout.middleware.SessionTimeoutMiddleware',
 ]
+
+SESSION_EXPIRE_SECONDS = 3600  # 1 hour
+SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
+SESSION_TIMEOUT_REDIRECT = 'login'
+
 
 ROOT_URLCONF = 'shop.urls'
 
@@ -150,12 +168,12 @@ MESSAGE_TAGS = {
 }
 
 # SMTP configurations
-EMAIL_HOST = os.getenv('EMAIL_HOST')
-EMAIL_PORT = os.getenv('EMAIL_PORT')
-EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
-EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS')
+EMAIL_HOST = env('EMAIL_HOST')
+EMAIL_PORT = env('EMAIL_PORT')
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = env('EMAIL_USE_TLS')
 
 # liqpay configurations
-PUBLIC_KEY = os.getenv('LIQPAY_PUBLIC_KEY')
-PRIVATE_KEY = os.getenv('LIQPAY_PRIVATE_KEY')
+# PUBLIC_KEY = env('LIQPAY_PUBLIC_KEY')
+# PRIVATE_KEY = env('LIQPAY_PRIVATE_KEY')
